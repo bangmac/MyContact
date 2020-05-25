@@ -3,9 +3,11 @@ package com.bmv.casestudycontact.service;
 import com.bmv.casestudycontact.model.Contact;
 import com.bmv.casestudycontact.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ContactImpl implements ContactService{
 
     @Autowired
