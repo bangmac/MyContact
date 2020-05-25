@@ -10,9 +10,9 @@ public interface ContactService {
 
     List<Contact> search(String name);
 
-    Contact findById(Integer id);
+    Contact findById(Long id);
 
     void save(Contact contact);
 
-    void delete(Integer id);
+    void delete(Long id);
 }

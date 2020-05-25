@@ -24,7 +24,7 @@ public class ContactImpl implements ContactService{
     }
 
     @Override
-    public Contact findById(Integer id) {
+    public Contact findById(Long id) {
         return contactRepository.findById(id).get();
     }
 
@@ -34,7 +34,7 @@ public class ContactImpl implements ContactService{
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         contactRepository.deleteById(id);
     }
 }
