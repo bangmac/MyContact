@@ -20,7 +20,7 @@
 				</div>
 
 				<div class="form-group">
-					<input class="form-control" type="email" placeholder="Contact email"
+					<input class="form-control" type="text" placeholder="Contact email"
 						   th:field="*{email}" th:errorclass="field-error" />
 					<em th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></em>
 				</div>
