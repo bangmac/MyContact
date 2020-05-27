@@ -3,6 +3,9 @@ package com.bmv.casestudycontact.controller;
 import com.bmv.casestudycontact.model.Contact;
 import com.bmv.casestudycontact.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -13,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ContactController {
@@ -21,11 +25,15 @@ public class ContactController {
     private ContactService contactService;
 
     @GetMapping("/contact")
-    public ModelAndView showList(){
-        List<Contact> contacts = (List<Contact>) contactService.findAll();
+    public ModelAndView showList(@PageableDefault(size =5) Pageable pageable){
+        Page<Contact> contacts = contactService.findAll(pageable);
         ModelAndView modelAndView = new ModelAndView("/list");
         modelAndView.addObject("contacts", contacts);
         return modelAndView;
+//        List<Contact> contacts = (List<Contact>) contactService.findAll();
+//        ModelAndView modelAndView = new ModelAndView("/list");
+//        modelAndView.addObject("contacts", contacts);
+//        return modelAndView;
     }
 
 //    public String list(Model model) {
@@ -34,23 +42,36 @@ public class ContactController {
 //    }
 
     @GetMapping("/contact/search")
-    public ModelAndView search(@RequestParam("term") String term){
-        ModelAndView modelAndView = new ModelAndView("/list");
-//        if (StringUtils.isEmpty(term)){
-//            return modelAndView;
-//        }
-        if (term == null){
-            return modelAndView;
+    public ModelAndView search(@RequestParam("term") Optional<String> term,@PageableDefault(size =5) Pageable pageable){
+        Page<Contact> contacts;
+        if(term.isPresent()){
+            contacts = contactService.findAllByNameContaining(term.get(), pageable);
+        } else {
+            contacts = contactService.findAll(pageable);
         }
-        modelAndView.addObject("contacts",contactService.search(term));
+        ModelAndView modelAndView = new ModelAndView("/list");
+        modelAndView.addObject("contacts", contacts);
         return modelAndView;
     }
-//    public String search(@RequestParam("term") String term, Model model) {
+
+//    public ModelAndView search(@RequestParam("term") Optional<String> term, @PageableDefault(size =5) Pageable pageable){
+//        ModelAndView modelAndView = new ModelAndView("/list");
+////        if (StringUtils.isEmpty(term)){
+////            return modelAndView;
+////        }
+//        if (term == null){
+//            return modelAndView;
+//        }
+//        modelAndView.addObject("contacts",contactService.findAllByNameContaining(term.get(), pageable));
+//        return modelAndView;
+//    }
+
+//    public String search(@RequestParam("term") Optional<String> term,@PageableDefault(size =5) Pageable pageable, Model model) {
 //        if (StringUtils.isEmpty(term)) {
 //            return "redirect:/contact";
 //        }
 //
-//        model.addAttribute("contacts", contactService.search(term));
+//        model.addAttribute("contacts", contactService.findAllByNameContaining(term.get(), pageable));
 //        return "list";
 //    }
 

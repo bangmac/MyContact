@@ -1,14 +1,20 @@
 package com.bmv.casestudycontact.service;
 
 import com.bmv.casestudycontact.model.Contact;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface ContactService {
 
-    Iterable<Contact> findAll();
+    Page<Contact> findAll(Pageable pageable);
 
-    List<Contact> search(String name);
+//    Iterable<Contact> findAll();
+
+    Page<Contact> findAllByNameContaining(String name, Pageable pageable);
+
+//    List<Contact> search(String name);
 
     Contact findById(Long id);
 
